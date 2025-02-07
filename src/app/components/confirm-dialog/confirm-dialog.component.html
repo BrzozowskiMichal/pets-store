@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>{{ data.title || 'Potwierdzenie' }}</h2>
+<mat-dialog-content>
+  <p>{{ data.message }}</p>
+  <div class="flex flex-col mx-0 m-3">
+    @if(data.petId) {
+    <span>
+      ID: <strong>{{ data.petId }}</strong>
+    </span>
+    } @if(data.petName) {
+    <span>
+      Nazwa: <strong>{{ data.petName }}</strong>
+    </span>
+    }
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Anuluj</button>
+  <button
+    [attr.data-cy]="'delete-confirm'"
+    mat-raised-button
+    color="warn"
+    (click)="onConfirm()"
+  >
+    Usuń
+  </button>
+</mat-dialog-actions>

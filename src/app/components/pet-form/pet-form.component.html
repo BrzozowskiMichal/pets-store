@@ -1,0 +1,163 @@
+<form [formGroup]="petForm" (ngSubmit)="onSubmit()" [attr.data-cy]="'pet-form'">
+  <h2 [attr.data-cy]="'form-title'">
+    {{
+      mode === 'details'
+        ? 'Szczegóły zwierzęcia'
+        : data.pet
+        ? 'Edytuj zwierzę'
+        : 'Dodaj zwierzę'
+    }}
+  </h2>
+  <mat-divider></mat-divider>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Category</mat-label>
+    <input
+      matInput
+      formControlName="category"
+      placeholder="Wpisz kategorię"
+      [attr.data-cy]="'pet-category'"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Name</mat-label>
+    <input
+      matInput
+      formControlName="name"
+      placeholder="Wpisz nazwę"
+      required
+      [attr.data-cy]="'pet-name'"
+    />
+    <mat-error *ngIf="petForm.get('name')?.hasError('required')">
+      Name jest wymagany
+    </mat-error>
+  </mat-form-field>
+
+  <div formArrayName="photoUrls" class="photo-urls">
+    @for(photoCtrl of photoUrls.controls; let i = $index; track photoCtrl) {
+    <div class="photo-url-row">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Photo URL {{ i + 1 }}</mat-label>
+        <input
+          matInput
+          [formControlName]="i"
+          placeholder="Wpisz URL zdjęcia"
+          [attr.data-cy]="'pet-photo-' + i"
+        />
+        <mat-error *ngIf="photoUrls.at(i).hasError('pattern')">
+          Photo URL jest wymagany
+        </mat-error>
+      </mat-form-field>
+
+      <button
+        *ngIf="mode !== 'details' && photoUrls.length > 1"
+        mat-icon-button
+        color="warn"
+        type="button"
+        (click)="removePhotoUrl(i)"
+        [attr.data-cy]="'remove-photo-btn-' + i"
+      >
+        <mat-icon>remove_circle</mat-icon>
+      </button>
+    </div>
+    }
+
+    <button
+      *ngIf="mode !== 'details'"
+      mat-button
+      type="button"
+      (click)="addPhotoUrl()"
+      [attr.data-cy]="'add-photo-btn'"
+    >
+      Dodaj kolejny URL
+    </button>
+  </div>
+
+  <mat-form-field class="full-width" appearance="fill">
+    <mat-label>Tagi</mat-label>
+    <mat-chip-grid
+      #chipGrid
+      aria-label="Enter tags"
+      [disabled]="mode === 'details'"
+      [attr.data-cy]="'pet-tags-grid'"
+    >
+      <mat-chip-row
+        *ngFor="let tagCtrl of tags.controls; let i = index"
+        [removable]="true"
+        (removed)="removeTag(i)"
+        [editable]="true"
+        [disabled]="mode === 'details'"
+        (edited)="editTag(i, $event)"
+        [aria-description]="'Press enter to edit ' + tagCtrl.value"
+        [attr.data-cy]="'pet-tag-' + i"
+      >
+        <img
+          matChipAvatar
+          src="https://material.angular.io/assets/img/examples/shiba1.jpg"
+          alt="Photo of a Shiba Inu"
+        />
+        {{ tagCtrl.value }}
+        <button
+          matChipRemove
+          [attr.aria-label]="'Remove ' + tagCtrl.value"
+          [attr.data-cy]="'remove-tag-' + i"
+        >
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+      <input
+        placeholder="Dodaj tag..."
+        [matChipInputFor]="chipGrid"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="true"
+        (matChipInputTokenEnd)="addTag($event)"
+        [attr.data-cy]="'add-tag-input'"
+      />
+    </mat-chip-grid>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Status</mat-label>
+    <mat-select formControlName="status" [attr.data-cy]="'pet-status'">
+      <mat-option
+        *ngFor="let status of statusOptions"
+        [value]="status"
+        [attr.data-cy]="'status-option-' + status"
+      >
+        {{ status }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="actions" *ngIf="mode !== 'details'">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="isLoading"
+      [attr.data-cy]="'submit-pet'"
+    >
+      {{ isLoading ? 'Zapisywanie...' : data.pet ? 'Aktualizuj' : 'Dodaj' }}
+    </button>
+    <button
+      mat-button
+      type="button"
+      (click)="onCancel()"
+      [disabled]="isLoading"
+      [attr.data-cy]="'cancel-pet'"
+    >
+      Anuluj
+    </button>
+  </div>
+  <div class="actions" *ngIf="mode === 'details'">
+    <button
+      mat-button
+      type="button"
+      (click)="onCancel()"
+      [attr.data-cy]="'close-details'"
+    >
+      Zamknij
+    </button>
+  </div>
+</form>

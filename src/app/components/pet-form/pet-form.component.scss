@@ -1,0 +1,66 @@
+:host {
+  display: block;
+  max-width: 600px;
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.mat-form-field {
+  margin-bottom: 16px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.photo-urls,
+.tags {
+  margin-bottom: 16px;
+}
+
+.photo-url-row,
+.tag-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  max-height: 200px;
+  overflow: auto;
+}
+
+.photo-url-row mat-form-field,
+.tag-row mat-form-field {
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+@media (max-width: 600px) {
+  :host {
+    padding: 16px;
+    margin: 10px;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+}
