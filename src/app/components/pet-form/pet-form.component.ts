@@ -34,6 +34,7 @@ import { PetFormData } from 'src/app/models/pet-form-data.model';
 import { PetStoreService } from 'src/app/stores/pet-store.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { ConfirmDialogState } from '../confirm-dialog/confirm-dialog-states.enum';
 
 @Component({
   selector: 'app-pet-form',
@@ -54,11 +55,13 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
   styleUrls: ['./pet-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class PetFormComponent implements OnInit {
+  confirmDialogStates = ConfirmDialogState;
   petForm!: FormGroup;
   isLoading = false;
   statusOptions: string[] = ['available', 'pending', 'sold'];
-  mode: 'edit' | 'details' = 'edit';
+  mode = ConfirmDialogState.Edit;
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
@@ -77,7 +80,7 @@ export class PetFormComponent implements OnInit {
     this.initForm();
     if (this.data && this.data.pet) {
       this.populateForm(this.data.pet);
-      if (this.mode === 'details') {
+      if (this.mode === ConfirmDialogState.Details) {
         this.petForm.disable();
       }
     }
