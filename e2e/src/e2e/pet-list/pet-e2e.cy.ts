@@ -9,9 +9,9 @@ describe('Pet List Page', () => {
   });
 
   it('should filter pets by name', () => {
-    cy.get('[data-cy="search-input"]').type('Shiba');
+    cy.get('[data-cy="search-input"]').type('doggie');
     cy.get('[data-cy^="pet-name-"]').each(($el) => {
-      cy.wrap($el).should('contain.text', 'shibaInu');
+      cy.wrap($el).should('contain.text', 'doggie');
     });
   });
 
@@ -65,7 +65,12 @@ describe('Pet List Page', () => {
       .should('contain.text', 'Zwierzę zostało dodane!');
   });
 
+  //Fails because of API id 500
   it('should edit an existing pet', () => {
+    cy.get('[data-cy="search-input"]').type('Golden Retriever');
+    cy.get('[data-cy^="pet-name-"]').each(($el) => {
+      cy.wrap($el).should('contain.text', 'Golden Retriever');
+    });
     cy.get('[data-cy^="edit-pet-btn-"]').first().click();
     cy.get('input[formControlName="name"]').clear().type('Updated Pet Name');
     cy.get('[data-cy="pet-photo-0"]')
@@ -94,5 +99,12 @@ describe('Pet List Page', () => {
     cy.get('[data-cy="pagination"]').find('button').last().click();
     cy.wait(500);
     cy.get('[data-cy="pets-table"]').should('exist');
+  });
+
+  it('should show "Brak wyników" when search finds no results', () => {
+    cy.get('[data-cy="search-input"]').type('NonExistentPet');
+    cy.get('[data-cy="pets-table"]').should('exist');
+    cy.get('[data-cy="no-results"]').should('contain.text', 'Brak wyników. Spróbuj wyszukać inną nazwę');
+    cy.get('[data-cy^="pet-id-"]').should('not.exist');
   });
 });

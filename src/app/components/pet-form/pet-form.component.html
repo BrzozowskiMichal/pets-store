@@ -45,7 +45,7 @@
           placeholder="Wpisz URL zdjęcia"
           [attr.data-cy]="'pet-photo-' + i"
         />
-        @if(photoUrls.at(i).hasError('pattern')) {
+        @if(photoUrls.at(i).errors) {
         <mat-error> Podaj poprawny URL </mat-error>
         }
       </mat-form-field>
