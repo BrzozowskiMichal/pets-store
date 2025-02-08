@@ -30,51 +30,47 @@
       [attr.data-cy]="'pet-name'"
     />
     @if(petForm.get('name')?.hasError('required')) {
-      <mat-error>
-        Name jest wymagany
-      </mat-error>
+    <mat-error> Name jest wymagany </mat-error>
     }
-    
   </mat-form-field>
 
   <div formArrayName="photoUrls" class="photo-urls">
-    @for(photoCtrl of photoUrls.controls; let i = $index; track photoCtrl) {
-      <div class="photo-url-row">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Photo URL {{ i + 1 }}</mat-label>
-          <input
-            matInput
-            [formControlName]="i"
-            placeholder="Wpisz URL zdjęcia"
-            [attr.data-cy]="'pet-photo-' + i"
-          />
-          @if(photoUrls.at(i).hasError('pattern')) {
-            <mat-error>
-              Podaj poprawny URL
-            </mat-error>
-          }
-          
-        </mat-form-field>
-
-        @if(mode !== confirmDialogStates.Details && photoUrls.length > 1) {
-          <button mat-icon-button
-                  color="warn"
-                  type="button"
-                  (click)="removePhotoUrl(i)"
-                  [attr.data-cy]="'remove-photo-btn-' + i">
-            <mat-icon>remove_circle</mat-icon>
-          </button>
+    @for(photoCtrl of photoUrls.controls; let i = $index; track i) {
+    <div class="photo-url-row">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Photo URL {{ i + 1 }}</mat-label>
+        <input
+          matInput
+          [formControlName]="i"
+          placeholder="Wpisz URL zdjęcia"
+          [attr.data-cy]="'pet-photo-' + i"
+        />
+        @if(photoUrls.at(i).hasError('pattern')) {
+        <mat-error> Podaj poprawny URL </mat-error>
         }
-      </div>
-    }
+      </mat-form-field>
 
-    @if(mode !== confirmDialogStates.Details) {
-      <button mat-button
-              type="button"
-              (click)="addPhotoUrl()"
-              [attr.data-cy]="'add-photo-btn'">
-        Dodaj kolejny URL
+      @if(mode !== confirmDialogStates.Details && photoUrls.length > 1) {
+      <button
+        mat-icon-button
+        color="warn"
+        type="button"
+        (click)="removePhotoUrl(i)"
+        [attr.data-cy]="'remove-photo-btn-' + i"
+      >
+        <mat-icon>remove_circle</mat-icon>
       </button>
+      }
+    </div>
+    } @if(mode !== confirmDialogStates.Details) {
+    <button
+      mat-button
+      type="button"
+      (click)="addPhotoUrl()"
+      [attr.data-cy]="'add-photo-btn'"
+    >
+      Dodaj kolejny URL
+    </button>
     }
   </div>
 
@@ -86,7 +82,7 @@
       [disabled]="mode === confirmDialogStates.Details"
       [attr.data-cy]="'pet-tags-grid'"
     >
-    @for(tagCtrl of tags.controls; let i = $index; track tagCtrl) {
+      @for(tagCtrl of tags.controls; let i = $index; track i) {
       <mat-chip-row
         [removable]="true"
         (removed)="removeTag(i)"
@@ -110,7 +106,7 @@
           <mat-icon>cancel</mat-icon>
         </button>
       </mat-chip-row>
-    }
+      }
       <input
         placeholder="Dodaj tag..."
         [matChipInputFor]="chipGrid"
@@ -125,49 +121,45 @@
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>Status</mat-label>
     <mat-select formControlName="status" [attr.data-cy]="'pet-status'">
-      <mat-option
-        *ngFor="let status of statusOptions"
-        [value]="status"
-        [attr.data-cy]="'status-option-' + status"
-      >
+      @for(status of statusOptions; let i = $index; track i) {
+      <mat-option [value]="status" [attr.data-cy]="'status-option-' + status">
         {{ status }}
       </mat-option>
+      }
     </mat-select>
   </mat-form-field>
 
   @if(mode !== confirmDialogStates.Details) {
-    <div class="actions">
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="isLoading"
-        [attr.data-cy]="'submit-pet'"
-      >
-        {{ isLoading ? 'Zapisywanie...' : data.pet ? 'Aktualizuj' : 'Dodaj' }}
-      </button>
-      <button
-        mat-button
-        type="button"
-        (click)="onCancel()"
-        [disabled]="isLoading"
-        [attr.data-cy]="'cancel-pet'"
-      >
-        Anuluj
-      </button>
-    </div>
-  }
-  
-  @if(mode === confirmDialogStates.Details) {
-    <div class="actions">
-      <button
-        mat-button
-        type="button"
-        (click)="onCancel()"
-        [attr.data-cy]="'close-details'"
-      >
-        Zamknij
-      </button>
-    </div>
+  <div class="actions">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="isLoading"
+      [attr.data-cy]="'submit-pet'"
+    >
+      {{ isLoading ? 'Zapisywanie...' : data.pet ? 'Aktualizuj' : 'Dodaj' }}
+    </button>
+    <button
+      mat-button
+      type="button"
+      (click)="onCancel()"
+      [disabled]="isLoading"
+      [attr.data-cy]="'cancel-pet'"
+    >
+      Anuluj
+    </button>
+  </div>
+  } @if(mode === confirmDialogStates.Details) {
+  <div class="actions">
+    <button
+      mat-button
+      type="button"
+      (click)="onCancel()"
+      [attr.data-cy]="'close-details'"
+    >
+      Zamknij
+    </button>
+  </div>
   }
 </form>

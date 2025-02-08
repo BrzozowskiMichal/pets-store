@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Inject,
   OnInit,
@@ -66,10 +67,11 @@ export class PetFormComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   constructor(
-    private fb: FormBuilder,
-    private petStoreService: PetStoreService,
-    private snackBar: MatSnackBar,
-    public dialogRef: MatDialogRef<PetFormComponent>,
+    private readonly cdr: ChangeDetectorRef,
+    private readonly fb: FormBuilder,
+    private readonly petStoreService: PetStoreService,
+    private readonly snackBar: MatSnackBar,
+    public readonly dialogRef: MatDialogRef<PetFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: PetFormData
   ) {}
 
@@ -167,13 +169,15 @@ export class PetFormComponent implements OnInit {
             duration: 3000,
           });
           this.dialogRef.close(pet);
+          this.cdr.markForCheck();
         },
         error: (err) => {
           this.isLoading = false;
-          this.snackBar.open('Błąd podczas aktualizacji pet-a', 'Zamknij', {
+          this.snackBar.open('Błąd podczas aktualizacji zwierzęcia', 'Zamknij', {
             duration: 3000,
           });
           console.error(err);
+          this.cdr.markForCheck();
         },
       });
     } else {
@@ -184,13 +188,15 @@ export class PetFormComponent implements OnInit {
             duration: 3000,
           });
           this.dialogRef.close(newPet);
+          this.cdr.markForCheck();
         },
         error: (err) => {
           this.isLoading = false;
-          this.snackBar.open('Błąd podczas dodawania pet-a', 'Zamknij', {
+          this.snackBar.open('Błąd podczas dodawania zwierzęcia', 'Zamknij', {
             duration: 3000,
           });
           console.error(err);
+          this.cdr.markForCheck();
         },
       });
     }

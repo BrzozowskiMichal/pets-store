@@ -120,7 +120,7 @@ export class PetListComponent {
             this.loadPets();
           },
           error: (err) => {
-            this.snackBar.open('Błąd podczas usuwania pet-a', 'Zamknij', {
+            this.snackBar.open('Błąd podczas usuwania zwierzęcia', 'Zamknij', {
               duration: 3000,
             });
             console.error(err);

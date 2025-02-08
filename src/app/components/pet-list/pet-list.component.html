@@ -49,12 +49,12 @@
 </div>
 
 <div class="px-6 pet-list-table">
-  <ng-container *ngIf="isLoading">
-    <mat-spinner
-      [attr.data-cy]="'loading-spinner'"
-      class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-    ></mat-spinner>
-  </ng-container>
+  @if(isLoading) {
+  <mat-spinner
+    [attr.data-cy]="'loading-spinner'"
+    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  ></mat-spinner>
+  }
   <div class="overflow-x-auto bg-white rounded-xl shadow-lg">
     <table
       mat-table
