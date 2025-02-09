@@ -38,12 +38,14 @@ export class PetStoreService {
 
   updatePet(updatedPet: Pet): Observable<Pet> {
     return this.petApiService.updatePet(updatedPet).pipe(
-      tap((pet) => {
-        this.petsSignal.set(
-          this.petsSignal().map((p) =>
-            p.id.toString() === pet.id.toString() ? pet : p
-          )
-        );
+      tap((pet: Pet) => {
+        this.petsSignal.update((pets) => {
+          const index = pets.findIndex((p) => p.id === pet.id);
+          if (index !== -1) {
+            pets[index] = pet;
+          }
+          return pets;
+        });
       })
     );
   }
