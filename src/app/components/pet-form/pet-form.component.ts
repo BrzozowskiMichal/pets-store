@@ -36,6 +36,7 @@ import { PetStoreService } from 'src/app/stores/pet-store.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ConfirmDialogState } from '../confirm-dialog/confirm-dialog-states.enum';
+import { PetStatusPipe } from 'src/app/pipes/pet-status.pipe';
 
 @Component({
   selector: 'app-pet-form',
@@ -51,6 +52,7 @@ import { ConfirmDialogState } from '../confirm-dialog/confirm-dialog-states.enum
     MatInputModule,
     MatButtonModule,
     MatChipsModule,
+    PetStatusPipe
   ],
   templateUrl: './pet-form.component.html',
   styleUrls: ['./pet-form.component.scss'],

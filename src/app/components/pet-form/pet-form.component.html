@@ -1,4 +1,9 @@
-<form [formGroup]="petForm" (ngSubmit)="onSubmit()" [attr.data-cy]="'pet-form'">
+<form
+  [formGroup]="petForm"
+  (ngSubmit)="onSubmit()"
+  [attr.data-cy]="'pet-form'"
+  class="flex flex-col gap-4"
+>
   <h2 [attr.data-cy]="'form-title'">
     {{
       mode === confirmDialogStates.Details
@@ -10,8 +15,8 @@
   </h2>
   <mat-divider></mat-divider>
 
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Category</mat-label>
+  <mat-form-field class="width-full">
+    <mat-label>Kategoria</mat-label>
     <input
       matInput
       formControlName="category"
@@ -20,8 +25,8 @@
     />
   </mat-form-field>
 
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Name</mat-label>
+  <mat-form-field class="width-full">
+    <mat-label>Nazwa</mat-label>
     <input
       matInput
       formControlName="name"
@@ -30,15 +35,15 @@
       [attr.data-cy]="'pet-name'"
     />
     @if(petForm.get('name')?.hasError('required')) {
-    <mat-error> Name jest wymagany </mat-error>
+    <mat-error> Nazwa jest wymagana </mat-error>
     }
   </mat-form-field>
 
   <div formArrayName="photoUrls" class="photo-urls">
     @for(photoCtrl of photoUrls.controls; let i = $index; track i) {
-    <div class="photo-url-row">
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Photo URL {{ i + 1 }}</mat-label>
+    <div class="photo-url-row flex flex-row items-baseline pt-3">
+      <mat-form-field class="width-full">
+        <mat-label>Zdjęcie URL {{ i + 1 }}</mat-label>
         <input
           matInput
           [formControlName]="i"
@@ -62,19 +67,23 @@
       </button>
       }
     </div>
-    } @if(mode !== confirmDialogStates.Details) {
+    }
+  </div>
+
+  @if(mode !== confirmDialogStates.Details) {
+  <div class="my-3">
     <button
       mat-button
       type="button"
       (click)="addPhotoUrl()"
       [attr.data-cy]="'add-photo-btn'"
     >
-      Dodaj kolejny URL
+      Dodaj kolejne URL zdjęcia +
     </button>
-    }
   </div>
+  }
 
-  <mat-form-field class="full-width" appearance="fill">
+  <mat-form-field class="tags-container width-full overflow-auto py-3">
     <mat-label>Tagi</mat-label>
     <mat-chip-grid
       #chipGrid
@@ -118,12 +127,12 @@
     </mat-chip-grid>
   </mat-form-field>
 
-  <mat-form-field appearance="fill" class="full-width">
+  <mat-form-field class="width-full">
     <mat-label>Status</mat-label>
     <mat-select formControlName="status" [attr.data-cy]="'pet-status'">
       @for(status of statusOptions; let i = $index; track i) {
       <mat-option [value]="status" [attr.data-cy]="'status-option-' + status">
-        {{ status }}
+        {{ status | petStatus }}
       </mat-option>
       }
     </mat-select>

@@ -18,9 +18,9 @@ describe('Pet List Page', () => {
   it('should filter pets by status', () => {
     cy.get('[data-cy="status-select"]').click();
     cy.get('[data-cy="status-option-sold"]').click({ force: true });
-    cy.wait(500);
+    cy.wait(1000);
     cy.get('[data-cy^="pet-status-"]').each(($el) => {
-      cy.wrap($el).should('contain.text', 'sold');
+      cy.wrap($el).should('contain.text', 'Sprzedany');
     });
   });
 

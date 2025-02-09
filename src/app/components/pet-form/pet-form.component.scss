@@ -6,10 +6,6 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.full-width {
-  width: 100%;
-}
-
 .mat-form-field {
   margin-bottom: 16px;
 }
@@ -21,19 +17,25 @@ h2 {
   font-weight: 500;
 }
 
-.photo-urls,
+.photo-urls {
+  max-height: 210px;
+  overflow: auto;
+}
+
+.tags-container {
+  max-height: 210px;
+}
+
 .tags {
   margin-bottom: 16px;
 }
 
 .photo-url-row,
 .tag-row {
-  display: flex;
-  align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
   max-height: 200px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .photo-url-row mat-form-field,
