@@ -3,6 +3,7 @@ import { PET_STATUS_MAP } from '../misc/status-labels-map';
 
 @Pipe({
   name: 'petStatus',
+  pure: true
 })
 export class PetStatusPipe implements PipeTransform {
   transform(value: string): string {
