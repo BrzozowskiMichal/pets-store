@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  private enableDarkMode() {
+  private enableDarkMode(): void {
     this.renderer.addClass(document.body, 'dark-mode');
   }
 }

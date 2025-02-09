@@ -59,6 +59,7 @@
 <div class="px-6 pet-list-table">
   @if (petStore.isLoading()) {
   <mat-spinner
+    diameter="50"
     class="spinner-center"
     [attr.data-cy]="'loading-spinner'"
   ></mat-spinner>
@@ -90,7 +91,7 @@
         *matCellDef="let pet"
         [attr.data-cy]="'pet-status-' + pet.id"
       >
-        {{ pet.status }}
+        {{ pet.status | petStatus }}
       </td>
     </ng-container>
 

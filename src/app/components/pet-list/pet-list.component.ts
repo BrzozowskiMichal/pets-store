@@ -22,6 +22,7 @@ import { PetFormComponent } from '../pet-form/pet-form.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { PetStatusPipe } from 'src/app/pipes/pet-status.pipe';
 
 @Component({
   selector: 'app-pet-list',
@@ -40,7 +41,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatIconModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    PetStatusPipe
   ],
   templateUrl: './pet-list.component.html',
   styleUrl: './pet-list.component.scss',

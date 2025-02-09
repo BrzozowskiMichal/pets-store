@@ -9,7 +9,20 @@ tr.mat-mdc-row:hover {
 }
 
 .spinner-center {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  position: absolute;
+  left: calc(50% - 25px);
+  top: calc(50% - 25px);
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+th, td {
+  min-width: 100px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
