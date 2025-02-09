@@ -1,8 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   ViewChild,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -14,18 +14,20 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { FormsModule } from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Pet } from 'src/app/models/pet.model';
 import { PetStoreService } from 'src/app/stores/pet-store.service';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { PetFormComponent } from '../pet-form/pet-form.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { ConfirmDialogData } from 'src/app/models/confirm-dialog-data.model';
+import { FormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-pet-list',
+  standalone: true,
   imports: [
+    FormsModule,
     CommonModule,
     MatDialogModule,
     MatTableModule,
@@ -37,133 +39,102 @@ import { ConfirmDialogData } from 'src/app/models/confirm-dialog-data.model';
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
-    FormsModule,
     MatProgressSpinnerModule,
+    MatTooltipModule
   ],
   templateUrl: './pet-list.component.html',
   styleUrl: './pet-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PetListComponent {
-  displayedColumns: string[] = ['id', 'name', 'status', 'actions'];
-  dataSource: MatTableDataSource<Pet> = new MatTableDataSource<Pet>([]);
+  displayedColumns = ['id', 'name', 'status', 'actions'];
+  dataSource = new MatTableDataSource<Pet>();
 
-  filterStatus: string = 'available';
-  filterName: string = '';
-  isLoading = false;
+  filterStatus = signal<string>('available');
+  filterName = signal<string>('');
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private dialog: MatDialog,
-    private petStore: PetStoreService,
+    public petStore: PetStoreService,
     private snackBar: MatSnackBar
-  ) {
-    effect(() => {
-      const pets = this.petStore.pets();
-      this.dataSource = new MatTableDataSource(pets);
-      this.setupTable();
-    });
-  }
+  ) {}
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
     this.loadPets();
   }
 
-  loadPets(): void {
-    this.isLoading = true;
-    this.petStore.loadPets(this.filterStatus);
-    this.isLoading = false;
-  }
-
-  setupTable(): void {
-    if (this.paginator) {
-      this.dataSource.paginator = this.paginator;
-    }
-    if (this.sort) {
-      this.dataSource.sort = this.sort;
-    }
-    this.dataSource.filterPredicate = (data: Pet, filter: string) =>
-      data.name?.trim().toLowerCase().includes(filter);
-    this.applyFilter();
-  }
-
   applyFilter(): void {
-    const filterValue = this.filterName.trim().toLowerCase();
-    this.dataSource.filter = filterValue;
+    this.dataSource.filter = this.filterName().trim().toLowerCase();
   }
 
   onStatusChange(): void {
     this.loadPets();
   }
 
-  onDelete(pet: Pet): void {
-    const dialogData: ConfirmDialogData = {
-      title: 'Potwierdzenie usunięcia',
-      message: 'Czy na pewno chcesz usunąć to zwierzę z listy?',
-      petId: pet.id,
-      petName: pet.name,
-    };
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '400px',
-      data: dialogData,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.petStore.deletePet(pet.id).subscribe({
-          next: () => {
-            this.snackBar.open('Zwierzę zostało usunięte', 'Zamknij', {
-              duration: 3000,
-            });
-            this.loadPets();
-          },
-          error: (err) => {
-            this.snackBar.open('Błąd podczas usuwania zwierzęcia', 'Zamknij', {
-              duration: 3000,
-            });
-            console.error(err);
-          },
-        });
-      }
-    });
-  }
-
   openAddPet(): void {
-    const dialogRef = this.dialog.open(PetFormComponent, {
-      width: '600px',
-      data: {},
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.snackBar.open('Zwierzę zostało dodane!', 'Zamknij', {
-          duration: 3000,
-        });
-      }
-    });
+    this.dialog
+      .open(PetFormComponent, { width: '600px' })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) this.loadPets();
+      });
   }
 
   editPet(pet: Pet): void {
-    const dialogRef = this.dialog.open(PetFormComponent, {
-      width: '600px',
-      data: { pet: pet, mode: 'edit' },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.snackBar.open('Zwierzę zostało zaktualizowane!', 'Zamknij', {
-          duration: 3000,
-        });
-      }
-    });
+    this.dialog
+      .open(PetFormComponent, {
+        width: '600px',
+        data: { pet, mode: 'edit' },
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) this.loadPets();
+      });
   }
 
   viewDetails(pet: Pet): void {
     this.dialog.open(PetFormComponent, {
       width: '600px',
-      data: { pet: pet, mode: 'details' },
+      data: { pet, mode: 'details' },
+    });
+  }
+
+  onDelete(pet: Pet): void {
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    width: '400px',
+    data: {
+      title: 'Potwierdzenie usunięcia',
+      message: 'Czy na pewno chcesz usunąć to zwierzę?',
+      petId: pet.id,
+      petName: pet.name,
+    },
+    disableClose: true,
+  });
+
+  dialogRef.componentInstance.confirmDelete.subscribe(() => {
+    this.petStore.deletePet(pet.id).subscribe({
+      next: () => {
+        this.snackBar.open('Zwierzę usunięte!', 'Zamknij', { duration: 3000 });
+        dialogRef.componentInstance.onDeleteSuccess();
+        this.loadPets();
+      },
+      error: () => {
+        this.snackBar.open('Błąd usuwania!', 'Zamknij', { duration: 3000 });
+        dialogRef.componentInstance.onDeleteError();
+      },
+    });
+  });
+}
+
+
+  private loadPets(): void {
+    this.petStore.loadPets(this.filterStatus()).subscribe((pets) => {
+      this.dataSource.data = pets;
     });
   }
 }

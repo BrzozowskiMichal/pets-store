@@ -1,20 +1,28 @@
 <div
-  class="flex items-center justify-between mb-8 px-6 py-4 bg-white rounded-xl shadow-lg"
+  class="flex items-center justify-between mb-8 px-6 py-4 rounded-xl shadow-lg"
 >
-  <h1 class="text-3xl font-extrabold text-gray-800">Lista Zwierząt</h1>
+  <div class="flex flex-row items-baseline gap-4">
+    <h1 class="text-3xl font-extrabold">Lista Zwierząt</h1>
+    <h3>
+      <a href="https://petstore.swagger.io" target="blank"
+        >(petstore.swagger.io)</a
+      >
+    </h3>
+  </div>
+
   <button
     mat-raised-button
     color="primary"
     (click)="openAddPet()"
+    class="btn-primary"
     [attr.data-cy]="'add-pet-btn'"
-    class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:from-indigo-700 hover:to-blue-700 transition duration-300"
   >
     Dodaj Zwierzę +
   </button>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 px-6">
-  <mat-form-field appearance="fill" class="w-full">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3 px-6">
+  <mat-form-field class="w-full">
     <mat-label>Wyszukaj po nazwie</mat-label>
     <input
       matInput
@@ -25,7 +33,7 @@
     />
   </mat-form-field>
 
-  <mat-form-field appearance="fill" class="w-full">
+  <mat-form-field class="w-full">
     <mat-label>Status</mat-label>
     <mat-select
       [(ngModel)]="filterStatus"
@@ -33,104 +41,108 @@
       [attr.data-cy]="'status-select'"
     >
       <mat-option value="all" [attr.data-cy]="'status-option-all'"
-        >All</mat-option
+        >Wszystkie</mat-option
       >
       <mat-option value="available" [attr.data-cy]="'status-option-available'"
-        >available</mat-option
+        >Dostępne</mat-option
       >
       <mat-option value="pending" [attr.data-cy]="'status-option-pending'"
-        >pending</mat-option
+        >Oczekujące</mat-option
       >
       <mat-option value="sold" [attr.data-cy]="'status-option-sold'"
-        >sold</mat-option
+        >Sprzedane</mat-option
       >
     </mat-select>
   </mat-form-field>
 </div>
 
 <div class="px-6 pet-list-table">
-  @if(isLoading) {
+  @if (petStore.isLoading()) {
   <mat-spinner
+    class="spinner-center"
     [attr.data-cy]="'loading-spinner'"
-    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   ></mat-spinner>
+  } @else {
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    matSort
+    [attr.data-cy]="'pets-table'"
+  >
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let pet" [attr.data-cy]="'pet-id-' + pet.id">
+        {{ pet.id }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nazwa</th>
+      <td mat-cell *matCellDef="let pet" [attr.data-cy]="'pet-name-' + pet.id">
+        {{ pet.name }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td
+        mat-cell
+        *matCellDef="let pet"
+        [attr.data-cy]="'pet-status-' + pet.id"
+      >
+        {{ pet.status }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Akcje</th>
+      <td mat-cell *matCellDef="let pet">
+        <button
+          mat-icon-button
+          color="tertiary"
+          matTooltip="Edycja"
+          (click)="editPet(pet)"
+          aria-label="Edytuj zwierzę"
+          [attr.data-cy]="'edit-pet-btn-' + pet.id"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          color="tertiary"
+          matTooltip="Szczegóły"
+          (click)="viewDetails(pet)"
+          aria-label="Zobacz szczegóły"
+          [attr.data-cy]="'details-pet-btn-' + pet.id"
+        >
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          color="warn"
+          matTooltip="Usuń"
+          (click)="onDelete(pet)"
+          aria-label="Usuń zwierzę"
+          [attr.data-cy]="'delete-pet-btn-' + pet.id"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr class="mat-row" *matNoDataRow [attr.data-cy]="'no-results'">
+      <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+        Brak wyników. Spróbuj wyszukać inną nazwę
+      </td>
+    </tr>
+  </table>
   }
-  <div class="overflow-x-auto bg-white rounded-xl shadow-lg">
-    <table
-      mat-table
-      [dataSource]="dataSource"
-      matSort
-      [attr.data-cy]="'pets-table'"
-    >
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-        <td mat-cell *matCellDef="let pet" [attr.data-cy]="'pet-id-' + pet.id">
-          {{ pet.id }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nazwa</th>
-        <td
-          mat-cell
-          *matCellDef="let pet"
-          [attr.data-cy]="'pet-name-' + pet.id"
-        >
-          {{ pet.name }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-        <td
-          mat-cell
-          *matCellDef="let pet"
-          [attr.data-cy]="'pet-status-' + pet.id"
-        >
-          {{ pet.status }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Akcje</th>
-        <td mat-cell *matCellDef="let pet">
-          <button
-            mat-button
-            (click)="editPet(pet)"
-            [attr.data-cy]="'edit-pet-btn-' + pet.id"
-          >
-            Edytuj
-          </button>
-          <button
-            mat-button
-            (click)="viewDetails(pet)"
-            [attr.data-cy]="'details-pet-btn-' + pet.id"
-          >
-            Szczegóły
-          </button>
-          <button
-            mat-button
-            color="warn"
-            (click)="onDelete(pet)"
-            [attr.data-cy]="'delete-pet-btn-' + pet.id"
-          >
-            Usuń
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      <tr class="mat-row" *matNoDataRow [attr.data-cy]="'no-results'">
-        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-          Brak wyników. Spróbuj wyszukać inną nazwę
-        </td>
-      </tr>
-    </table>
-  </div>
 </div>
 
 <mat-paginator
   [pageSizeOptions]="[5, 10, 20]"
+  [showFirstLastButtons]="true"
   [attr.data-cy]="'pagination'"
 ></mat-paginator>

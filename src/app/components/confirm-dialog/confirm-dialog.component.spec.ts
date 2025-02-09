@@ -15,6 +15,7 @@ describe('ConfirmDialogComponent', () => {
   beforeEach(async () => {
     dialogRefMock = {
       close: jest.fn(),
+      disableClose: false,
     } as unknown as jest.Mocked<MatDialogRef<ConfirmDialogComponent>>;
 
     await TestBed.configureTestingModule({
@@ -39,13 +40,29 @@ describe('ConfirmDialogComponent', () => {
     expect(component.data).toEqual(dialogDataMock);
   });
 
-  it('should close the dialog with "true" when onConfirm is called', () => {
+  it('should emit confirmDelete when onConfirm is called and show spinner', () => {
+    jest.spyOn(component.confirmDelete, 'emit');
+
     component.onConfirm();
-    expect(dialogRefMock.close).toHaveBeenCalledWith(true);
+
+    expect(component.isLoading).toBeTruthy();
+    expect(component.confirmDelete.emit).toHaveBeenCalled();
+    expect(dialogRefMock.close).not.toHaveBeenCalled();
   });
 
   it('should close the dialog with "false" when onCancel is called', () => {
     component.onCancel();
-    expect(dialogRefMock.close).toHaveBeenCalledWith(false);
+    expect(dialogRefMock.close).toHaveBeenCalledWith();
+  });
+
+  it('should close the dialog on success', () => {
+    component.onDeleteSuccess();
+    expect(dialogRefMock.close).toHaveBeenCalledWith(true);
+  });
+
+  it('should reset isLoading on delete error', () => {
+    component.isLoading = true;
+    component.onDeleteError();
+    expect(component.isLoading).toBeFalsy();
   });
 });

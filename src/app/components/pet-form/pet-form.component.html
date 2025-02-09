@@ -3,7 +3,7 @@
     {{
       mode === confirmDialogStates.Details
         ? 'Szczegóły zwierzęcia'
-        : data.pet
+        : data && data.pet
         ? 'Edytuj zwierzę'
         : 'Dodaj zwierzę'
     }}
@@ -135,10 +135,12 @@
       mat-raised-button
       color="primary"
       type="submit"
-      [disabled]="isLoading"
+      [disabled]="isLoading || (petForm && petForm.invalid)"
       [attr.data-cy]="'submit-pet'"
     >
-      {{ isLoading ? 'Zapisywanie...' : data.pet ? 'Aktualizuj' : 'Dodaj' }}
+      {{
+        isLoading ? 'Zapisywanie...' : data && data.pet ? 'Aktualizuj' : 'Dodaj'
+      }}
     </button>
     <button
       mat-button

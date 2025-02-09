@@ -108,3 +108,46 @@ describe('Pet List Page', () => {
     cy.get('[data-cy^="pet-id-"]').should('not.exist');
   });
 });
+
+describe('Dark Mode Toggle', () => {
+  beforeEach(() => {
+    cy.visit('/');
+  });
+
+  it('should toggle dark mode', () => {
+    cy.get('mat-slide-toggle').should('exist');
+    cy.get('mat-slide-toggle').click();
+    cy.get('body').should('have.class', 'dark-mode');
+
+    cy.window().then((win) => {
+      expect(win.localStorage.getItem('dark-mode')).to.eq('enabled');
+    });
+
+    cy.get('mat-slide-toggle').click();
+    cy.get('body').should('not.have.class', 'dark-mode');
+
+    cy.window().then((win) => {
+      expect(win.localStorage.getItem('dark-mode')).to.eq('disabled');
+    });
+  });
+
+  it('should remember dark mode after page reload', () => {
+    cy.get('mat-slide-toggle').click();
+    cy.get('body').should('have.class', 'dark-mode');
+
+    cy.reload();
+
+    cy.get('body').should('have.class', 'dark-mode');
+
+    cy.window().then((win) => {
+      expect(win.localStorage.getItem('dark-mode')).to.eq('enabled');
+    });
+
+    cy.get('mat-slide-toggle').click();
+    cy.get('body').should('not.have.class', 'dark-mode');
+
+    cy.reload();
+
+    cy.get('body').should('not.have.class', 'dark-mode');
+  });
+});

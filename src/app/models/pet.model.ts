@@ -14,7 +14,7 @@ export interface Category {
     id?: any;
     category?: Category;
     name: string;
-    photoUrls: string[];
+    photoUrls?: string[];
     tags?: Tag[];
     status: PetStatus;
   }

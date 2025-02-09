@@ -213,15 +213,18 @@ export class PetFormComponent implements OnInit {
       status: pet.status,
     });
 
+    this.photoUrls.clear();
     if (pet.photoUrls && pet.photoUrls.length) {
-      this.photoUrls.clear();
       pet.photoUrls.forEach((url) => {
-        this.photoUrls.push(this.fb.control(url, optionalUrlValidator()));
+        const control = this.fb.control(url, optionalUrlValidator());
+        control.markAsTouched();
+        control.updateValueAndValidity();
+        this.photoUrls.push(control);
       });
     }
 
+    this.tags.clear();
     if (pet.tags && pet.tags.length) {
-      this.tags.clear();
       pet.tags.forEach((tag) => {
         this.tags.push(this.fb.control(tag.name));
       });

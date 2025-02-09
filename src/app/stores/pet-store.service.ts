@@ -1,35 +1,37 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 import { Pet } from '../models/pet.model';
 import { PetApiService } from '../services/pet/pet-api.service';
-import { Observable, tap } from 'rxjs';
+import { Observable, finalize, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PetStoreService {
-  pets = signal<Pet[]>([]);
+  private petsSignal = signal<Pet[]>([]);
+  isLoading = signal<boolean>(false);
+
+  pets = computed(() => this.petsSignal());
 
   constructor(private petApiService: PetApiService) {}
 
-  loadPets(status: string): void {
-    if (status.toLowerCase() === 'all') {
-      this.petApiService.getAllPets().subscribe({
-        next: (pets) => this.pets.set(pets),
-        error: (err) => console.error('Error loading pets:', err),
-      });
-    } else {
-      this.petApiService.getPetsByStatus(status).subscribe({
-        next: (pets) => this.pets.set(pets),
-        error: (err) => console.error('Error loading pets:', err),
-      });
-    }
+  loadPets(status: string): Observable<Pet[]> {
+    this.isLoading.set(true);
+
+    return (status.toLowerCase() === 'all'
+      ? this.petApiService.getAllPets()
+      : this.petApiService.getPetsByStatus(status)
+    ).pipe(
+      tap((pets) => {
+        this.petsSignal.set(pets);
+      }),
+      finalize(() => this.isLoading.set(false))
+    );
   }
 
   createPet(newPet: Pet): Observable<Pet> {
     return this.petApiService.addPet(newPet).pipe(
       tap((createdPet) => {
-        const current = this.pets();
-        this.pets.set([...current, createdPet]);
+        this.petsSignal.set([...this.petsSignal(), createdPet]);
       })
     );
   }
@@ -37,9 +39,10 @@ export class PetStoreService {
   updatePet(updatedPet: Pet): Observable<Pet> {
     return this.petApiService.updatePet(updatedPet).pipe(
       tap((pet) => {
-        const current = this.pets();
-        this.pets.set(
-          current.map((p) => (p.id.toString() === pet.id.toString() ? pet : p))
+        this.petsSignal.set(
+          this.petsSignal().map((p) =>
+            p.id.toString() === pet.id.toString() ? pet : p
+          )
         );
       })
     );
@@ -48,8 +51,9 @@ export class PetStoreService {
   deletePet(petId: number): Observable<any> {
     return this.petApiService.deletePet(petId).pipe(
       tap(() => {
-        const current = this.pets();
-        this.pets.set(current.filter((p) => p.id !== petId));
+        this.petsSignal.set(
+          this.petsSignal().filter((p) => p.id !== petId)
+        );
       })
     );
   }

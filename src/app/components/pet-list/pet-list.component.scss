@@ -1,4 +1,15 @@
 .pet-list-table {
-    max-height: calc(100vh - 400px);
-    overflow: auto;
+  max-height: calc(100vh - 350px);
+  overflow: auto;
+}
+
+tr.mat-mdc-row:hover {
+  background-color: #0079d2;
+  color: white;
+}
+
+.spinner-center {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }

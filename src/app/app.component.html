@@ -1,1 +1,13 @@
+<div class="flex flex-row items-center justify-end p-3">
+  <mat-slide-toggle
+    [checked]="isDarkMode"
+    (change)="toggleDarkMode()"
+    color="primary"
+    class="flex flex-row items-center"
+    aria-label="Przełącz tryb ciemny"
+  >
+  </mat-slide-toggle>
+  <mat-icon>{{ isDarkMode ? 'dark_mode' : 'light_mode' }}</mat-icon>
+</div>
+
 <app-pet-list></app-pet-list>
