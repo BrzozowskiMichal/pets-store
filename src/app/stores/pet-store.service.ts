@@ -51,7 +51,7 @@ export class PetStoreService {
     );
   }
 
-  deletePet(petId: number): Observable<any> {
+  deletePet(petId: number): Observable<Pet> {
     return this.petApiService.deletePet(petId).pipe(
       tap(() => {
         this.petsSignal.set(this.petsSignal().filter((p) => p.id !== petId));
