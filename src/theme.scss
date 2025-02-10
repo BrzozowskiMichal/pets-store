@@ -10,10 +10,7 @@ $angular-material-3-light-theme: mat.define-theme(
       theme-type: light,
       primary: $primary-palette,
       tertiary: $tertiary-palette,
-    ),
-    density: (
-      scale: 0,
-    ),
+    )
   )
 );
 
@@ -23,10 +20,7 @@ $angular-material-3-dark-theme: mat.define-theme(
       theme-type: dark,
       primary: $dark-primary-palette,
       tertiary: $dark-tertiary-palette,
-    ),
-    density: (
-      scale: 0,
-    ),
+    )
   )
 );
 
@@ -34,16 +28,20 @@ $angular-material-3-dark-theme: mat.define-theme(
   @include mat.color-variants-backwards-compatibility($angular-material-3-light-theme);
   @include mat.all-component-themes($angular-material-3-light-theme);
 
-  --background-color: #{map.get($neutral-palette, 99)};
-  --text-color: #{map.get($neutral-palette, 10)};
+  & {
+    --background-color: #{map.get($neutral-palette, 99)};
+    --text-color: #{map.get($neutral-palette, 10)};
+  }
 }
 
 .dark-mode {
   @include mat.color-variants-backwards-compatibility($angular-material-3-dark-theme);
-  @include mat.all-component-themes($angular-material-3-dark-theme);
+  @include mat.all-component-colors($angular-material-3-dark-theme);
 
-  --background-color: #{map.get($dark-neutral-palette, 10)};
-  --text-color: #{map.get($dark-neutral-palette, 95)};
+  & {
+    --background-color: #{map.get($dark-neutral-palette, 10)};
+    --text-color: #{map.get($dark-neutral-palette, 95)};
+  }
 }
 
 body {
