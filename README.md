@@ -7,7 +7,7 @@ Aplikacja umożliwia zarządzanie zwierzętami, takie jak dodawanie, edytowanie,
 
 UI został zbudowany przy użyciu **Angular Material** i **Tailwind CSS**, a testy E2E są wykonywane za pomocą **Cypress**.
 
-Projekt korzysta z publicznego API: [text](https://petstore.swagger.io)
+Projekt korzysta z publicznego API: [Petstore API Swagger](https://petstore.swagger.io)
 
 ---
 
