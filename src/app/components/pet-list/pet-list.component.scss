@@ -26,3 +26,21 @@ th, td {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.status {
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  &.available {
+    color: white;
+    background-color: green;
+  }
+  &.pending {
+    color: white;
+    background-color: orange;
+  }
+  &.sold {
+    color: white;
+    background-color: red;
+  }
+}

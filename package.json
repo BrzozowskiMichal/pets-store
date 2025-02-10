@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve",
-    "build": "nx build",
-    "test": "nx test"
+    "start": "npx nx serve petstore-workspace",
+    "build": "npx nx build petstore-workspace",
+    "test": "npx nx test petstore-workspace",
+    "e2e": "npx nx e2e e2e"
   },
   "private": true,
   "dependencies": {

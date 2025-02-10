@@ -91,7 +91,9 @@
         *matCellDef="let pet"
         [attr.data-cy]="'pet-status-' + pet.id"
       >
-        {{ pet.status | petStatus }}
+        <span [style.color]="(pet.status | petStatus).color">{{
+          (pet.status | petStatus).label
+        }}</span>
       </td>
     </ng-container>
 

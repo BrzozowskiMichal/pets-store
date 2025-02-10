@@ -12,19 +12,35 @@ describe('PetStatusPipe', () => {
     expect(pipe).toBeTruthy();
   });
 
-  it('should transform "available" to correct label', () => {
-    expect(pipe.transform('available')).toBe(PET_STATUS_MAP['available']);
+  it('should transform "available" to correct label and color', () => {
+    const result = pipe.transform('available');
+    expect(result).toEqual({
+      label: PET_STATUS_MAP['available'],
+      color: 'green',
+    });
   });
 
-  it('should transform "sold" to correct label', () => {
-    expect(pipe.transform('sold')).toBe(PET_STATUS_MAP['sold']);
+  it('should transform "sold" to correct label and color', () => {
+    const result = pipe.transform('sold');
+    expect(result).toEqual({
+      label: PET_STATUS_MAP['sold'],
+      color: 'red',
+    });
   });
 
-  it('should transform "pending" to correct label', () => {
-    expect(pipe.transform('pending')).toBe(PET_STATUS_MAP['pending']);
+  it('should transform "pending" to correct label and color', () => {
+    const result = pipe.transform('pending');
+    expect(result).toEqual({
+      label: PET_STATUS_MAP['pending'],
+      color: 'orange',
+    });
   });
 
-  it('should return "Nieznany" for an invalid status', () => {
-    expect(pipe.transform('invalid_status')).toBe('Nieznany');
+  it('should return default label and color for an invalid status', () => {
+    const result = pipe.transform('invalid_status');
+    expect(result).toEqual({
+      label: 'Nieznany',
+      color: 'grey',
+    });
   });
 });

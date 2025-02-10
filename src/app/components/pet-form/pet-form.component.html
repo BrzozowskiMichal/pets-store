@@ -132,7 +132,7 @@
     <mat-select formControlName="status" [attr.data-cy]="'pet-status'">
       @for(status of statusOptions; let i = $index; track i) {
       <mat-option [value]="status" [attr.data-cy]="'status-option-' + status">
-        {{ status | petStatus }}
+        {{ (status | petStatus).label }}
       </mat-option>
       }
     </mat-select>
