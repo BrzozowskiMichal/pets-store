@@ -51,7 +51,10 @@ describe('AppComponent (Standalone)', () => {
 
     expect(component.isDarkMode).toBeTruthy();
     expect(rendererSpy).toHaveBeenCalledWith(document.body, 'dark-mode');
-    expect(window.localStorage.setItem).toHaveBeenCalledWith('dark-mode', 'enabled');
+    expect(window.localStorage.setItem).toHaveBeenCalledWith(
+      'dark-mode',
+      'enabled'
+    );
   });
 
   it('should disable dark mode and remove from localStorage', () => {
@@ -62,7 +65,10 @@ describe('AppComponent (Standalone)', () => {
 
     expect(component.isDarkMode).toBeFalsy();
     expect(rendererSpy).toHaveBeenCalledWith(document.body, 'dark-mode');
-    expect(window.localStorage.setItem).toHaveBeenCalledWith('dark-mode', 'disabled');
+    expect(window.localStorage.setItem).toHaveBeenCalledWith(
+      'dark-mode',
+      'disabled'
+    );
   });
 
   it('should add "dark-mode" class on enableDarkMode()', () => {

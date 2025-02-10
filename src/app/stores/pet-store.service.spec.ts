@@ -9,10 +9,18 @@ describe('PetStoreService', () => {
 
   beforeEach(() => {
     petApiMock = {
-      getAllPets: jest.fn().mockReturnValue(of([{ id: 1, name: 'Luna', status: 'available' }])),
-      getPetsByStatus: jest.fn().mockReturnValue(of([{ id: 1, name: 'Luna', status: 'available' }])),
-      addPet: jest.fn().mockReturnValue(of({ id: 2, name: 'Burek', status: 'available' })),
-      updatePet: jest.fn().mockReturnValue(of({ id: 1, name: 'Reksio', status: 'sold' })),
+      getAllPets: jest
+        .fn()
+        .mockReturnValue(of([{ id: 1, name: 'Luna', status: 'available' }])),
+      getPetsByStatus: jest
+        .fn()
+        .mockReturnValue(of([{ id: 1, name: 'Luna', status: 'available' }])),
+      addPet: jest
+        .fn()
+        .mockReturnValue(of({ id: 2, name: 'Burek', status: 'available' })),
+      updatePet: jest
+        .fn()
+        .mockReturnValue(of({ id: 1, name: 'Reksio', status: 'sold' })),
       deletePet: jest.fn().mockReturnValue(of({})),
     } as unknown as jest.Mocked<PetApiService>;
 
@@ -41,14 +49,18 @@ describe('PetStoreService', () => {
   it('should load all pets', fakeAsync(() => {
     service.loadPets('all').subscribe();
     tick();
-    expect(service.pets()).toEqual([{ id: 1, name: 'Luna', status: 'available' }]);
+    expect(service.pets()).toEqual([
+      { id: 1, name: 'Luna', status: 'available' },
+    ]);
     expect(petApiMock.getAllPets).toHaveBeenCalled();
   }));
 
   it('should load pets by status', fakeAsync(() => {
     service.loadPets('available').subscribe();
     tick();
-    expect(service.pets()).toEqual([{ id: 1, name: 'Luna', status: 'available' }]);
+    expect(service.pets()).toEqual([
+      { id: 1, name: 'Luna', status: 'available' },
+    ]);
     expect(petApiMock.getPetsByStatus).toHaveBeenCalledWith('available');
   }));
 
@@ -56,16 +68,22 @@ describe('PetStoreService', () => {
     service.loadPets('all').subscribe();
     tick();
 
-    service.createPet({ id: 2, name: 'Burek', status: 'available' }).subscribe();
+    service
+      .createPet({ id: 2, name: 'Burek', status: 'available' })
+      .subscribe();
     tick();
 
     expect(service.pets()).toEqual([
       { id: 1, name: 'Luna', status: 'available' },
-      { id: 2, name: 'Burek', status: 'available' }
+      { id: 2, name: 'Burek', status: 'available' },
     ]);
-    
-    expect(petApiMock.addPet).toHaveBeenCalledWith({ id: 2, name: 'Burek', status: 'available' });
-}));
+
+    expect(petApiMock.addPet).toHaveBeenCalledWith({
+      id: 2,
+      name: 'Burek',
+      status: 'available',
+    });
+  }));
 
   it('should update a pet', fakeAsync(() => {
     service.loadPets('all').subscribe();
@@ -73,7 +91,11 @@ describe('PetStoreService', () => {
     service.updatePet({ id: 1, name: 'Reksio', status: 'sold' }).subscribe();
     tick();
     expect(service.pets()).toEqual([{ id: 1, name: 'Reksio', status: 'sold' }]);
-    expect(petApiMock.updatePet).toHaveBeenCalledWith({ id: 1, name: 'Reksio', status: 'sold' });
+    expect(petApiMock.updatePet).toHaveBeenCalledWith({
+      id: 1,
+      name: 'Reksio',
+      status: 'sold',
+    });
   }));
 
   it('should delete a pet', fakeAsync(() => {
