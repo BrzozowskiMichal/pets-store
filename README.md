@@ -12,6 +12,7 @@ UI został zbudowany przy użyciu **Angular Material** i **Tailwind CSS**, a tes
 ## 🌟 **Funkcjonalności**
 ✅ **Lista zwierząt** z filtrowaniem i sortowaniem  
 ✅ **Dodawanie, edytowanie i usuwanie zwierząt**  
+✅ **Tryb ciemny**  
 ✅ **Dynamiczne formularze** (obsługa zdjęć i tagów)  
 ✅ **Walidacja danych** (np. opcjonalny URL)  
 ✅ **Nowoczesny UI (Angular Material + Tailwind CSS)**  
