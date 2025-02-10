@@ -42,7 +42,7 @@ import { PetStatusPipe } from 'src/app/pipes/pet-status.pipe';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
-    PetStatusPipe
+    PetStatusPipe,
   ],
   templateUrl: './pet-list.component.html',
   styleUrl: './pet-list.component.scss',
@@ -107,32 +107,33 @@ export class PetListComponent {
   }
 
   onDelete(pet: Pet): void {
-  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    width: '400px',
-    data: {
-      title: 'Potwierdzenie usunięcia',
-      message: 'Czy na pewno chcesz usunąć to zwierzę?',
-      petId: pet.id,
-      petName: pet.name,
-    },
-    disableClose: true,
-  });
-
-  dialogRef.componentInstance.confirmDelete.subscribe(() => {
-    this.petStore.deletePet(pet.id).subscribe({
-      next: () => {
-        this.snackBar.open('Zwierzę usunięte!', 'Zamknij', { duration: 3000 });
-        dialogRef.componentInstance.onDeleteSuccess();
-        this.loadPets();
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Potwierdzenie usunięcia',
+        message: 'Czy na pewno chcesz usunąć to zwierzę?',
+        petId: pet.id,
+        petName: pet.name,
       },
-      error: () => {
-        this.snackBar.open('Błąd usuwania!', 'Zamknij', { duration: 3000 });
-        dialogRef.componentInstance.onDeleteError();
-      },
+      disableClose: true,
     });
-  });
-}
 
+    dialogRef.componentInstance.confirmDelete.subscribe(() => {
+      this.petStore.deletePet(pet.id).subscribe({
+        next: () => {
+          this.snackBar.open('Zwierzę usunięte!', 'Zamknij', {
+            duration: 3000,
+          });
+          dialogRef.componentInstance.onDeleteSuccess();
+          this.loadPets();
+        },
+        error: () => {
+          this.snackBar.open('Błąd usuwania!', 'Zamknij', { duration: 3000 });
+          dialogRef.componentInstance.onDeleteError();
+        },
+      });
+    });
+  }
 
   private loadPets(): void {
     this.petStore.loadPets(this.filterStatus()).subscribe((pets) => {

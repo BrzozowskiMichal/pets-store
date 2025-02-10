@@ -1,4 +1,9 @@
-import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import {
+  TestBed,
+  ComponentFixture,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { PetListComponent } from './pet-list.component';
 import { PetStoreService } from 'src/app/stores/pet-store.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,10 +21,12 @@ describe('PetListComponent', () => {
 
   beforeEach(async () => {
     petStoreMock = {
-    isLoading: signal(false),
-    loadPets: jest.fn().mockReturnValue(of([{ id: 1, name: 'Rex', status: 'available' }])),
-    deletePet: jest.fn().mockReturnValue(of({})),
-  } as unknown as jest.Mocked<PetStoreService>;
+      isLoading: signal(false),
+      loadPets: jest
+        .fn()
+        .mockReturnValue(of([{ id: 1, name: 'Rex', status: 'available' }])),
+      deletePet: jest.fn().mockReturnValue(of({})),
+    } as unknown as jest.Mocked<PetStoreService>;
 
     dialogMock = {
       open: jest.fn(),

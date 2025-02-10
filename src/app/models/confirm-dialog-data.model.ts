@@ -1,6 +1,6 @@
 export interface ConfirmDialogData {
-    title: string;
-    message: string;
-    petId: number;
-    petName: string;
-  }
+  title: string;
+  message: string;
+  petId: number;
+  petName: string;
+}

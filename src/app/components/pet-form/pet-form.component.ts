@@ -52,13 +52,12 @@ import { PetStatusPipe } from 'src/app/pipes/pet-status.pipe';
     MatInputModule,
     MatButtonModule,
     MatChipsModule,
-    PetStatusPipe
+    PetStatusPipe,
   ],
   templateUrl: './pet-form.component.html',
   styleUrls: ['./pet-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class PetFormComponent implements OnInit {
   confirmDialogStates = ConfirmDialogState;
   petForm!: FormGroup;
@@ -175,9 +174,13 @@ export class PetFormComponent implements OnInit {
         },
         error: (err) => {
           this.isLoading = false;
-          this.snackBar.open('Błąd podczas aktualizacji zwierzęcia', 'Zamknij', {
-            duration: 3000,
-          });
+          this.snackBar.open(
+            'Błąd podczas aktualizacji zwierzęcia',
+            'Zamknij',
+            {
+              duration: 3000,
+            }
+          );
           console.error(err);
           this.cdr.markForCheck();
         },

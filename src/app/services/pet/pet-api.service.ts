@@ -7,7 +7,6 @@ import { Pet } from 'src/app/models/pet.model';
   providedIn: 'root',
 })
 export class PetApiService {
-
   private readonly apiUrl = 'https://petstore.swagger.io/v2';
 
   constructor(private http: HttpClient) {}
@@ -21,7 +20,9 @@ export class PetApiService {
   }
 
   getPetsByStatus(status: string): Observable<Pet[]> {
-    return this.http.get<Pet[]>(`${this.apiUrl}/pet/findByStatus?status=${status}`);
+    return this.http.get<Pet[]>(
+      `${this.apiUrl}/pet/findByStatus?status=${status}`
+    );
   }
 
   deletePet(petId: number): Observable<any> {
@@ -36,12 +37,12 @@ export class PetApiService {
     return forkJoin({
       available: this.getPetsByStatus('available'),
       pending: this.getPetsByStatus('pending'),
-      sold: this.getPetsByStatus('sold')
+      sold: this.getPetsByStatus('sold'),
     }).pipe(
-      map(results => [
+      map((results) => [
         ...results.available,
         ...results.pending,
-        ...results.sold
+        ...results.sold,
       ])
     );
   }

@@ -5,7 +5,8 @@ export function optionalUrlValidator(): ValidatorFn {
     if (!control.value || control.value.trim() === '') {
       return null;
     }
-    const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/;
+    const urlPattern =
+      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/;
     const valid = urlPattern.test(control.value);
     return valid ? null : { invalidUrl: true };
   };

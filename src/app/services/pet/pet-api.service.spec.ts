@@ -1,6 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import {
+  HttpTestingController,
+  provideHttpClientTesting,
+} from '@angular/common/http/testing';
 import { PetApiService } from './pet-api.service';
 import { Pet } from 'src/app/models/pet.model';
 
@@ -79,7 +82,9 @@ describe('PetApiService', () => {
       expect(response).toEqual(pets);
     });
 
-    const req = httpMock.expectOne(`${apiUrl}/pet/findByStatus?status=available`);
+    const req = httpMock.expectOne(
+      `${apiUrl}/pet/findByStatus?status=available`
+    );
     expect(req.request.method).toBe('GET');
     req.flush(pets);
   });
@@ -106,8 +111,12 @@ describe('PetApiService', () => {
       expect(response).toEqual([...availablePets, ...pendingPets, ...soldPets]);
     });
 
-    const req1 = httpMock.expectOne(`${apiUrl}/pet/findByStatus?status=available`);
-    const req2 = httpMock.expectOne(`${apiUrl}/pet/findByStatus?status=pending`);
+    const req1 = httpMock.expectOne(
+      `${apiUrl}/pet/findByStatus?status=available`
+    );
+    const req2 = httpMock.expectOne(
+      `${apiUrl}/pet/findByStatus?status=pending`
+    );
     const req3 = httpMock.expectOne(`${apiUrl}/pet/findByStatus?status=sold`);
 
     expect(req1.request.method).toBe('GET');

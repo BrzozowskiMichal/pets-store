@@ -7,7 +7,13 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, PetListComponent, MatSlideToggleModule, MatIconModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    PetListComponent,
+    MatSlideToggleModule,
+    MatIconModule,
+  ],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -16,9 +22,7 @@ export class AppComponent implements OnInit {
   title = 'PETSTORE';
   isDarkMode = false;
 
-  constructor(
-    private readonly renderer: Renderer2
-  ) {}
+  constructor(private readonly renderer: Renderer2) {}
 
   ngOnInit(): void {
     this.isDarkMode = localStorage.getItem('dark-mode') === 'enabled';

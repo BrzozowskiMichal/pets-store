@@ -1,4 +1,4 @@
 export enum ConfirmDialogState {
-    Details = 'details',
-    Edit = 'edit'
+  Details = 'details',
+  Edit = 'edit',
 }

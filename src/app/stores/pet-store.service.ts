@@ -17,9 +17,10 @@ export class PetStoreService {
   loadPets(status: string): Observable<Pet[]> {
     this.isLoading.set(true);
 
-    return (status.toLowerCase() === 'all'
-      ? this.petApiService.getAllPets()
-      : this.petApiService.getPetsByStatus(status)
+    return (
+      status.toLowerCase() === 'all'
+        ? this.petApiService.getAllPets()
+        : this.petApiService.getPetsByStatus(status)
     ).pipe(
       tap((pets) => {
         this.petsSignal.set(pets);
@@ -53,9 +54,7 @@ export class PetStoreService {
   deletePet(petId: number): Observable<any> {
     return this.petApiService.deletePet(petId).pipe(
       tap(() => {
-        this.petsSignal.set(
-          this.petsSignal().filter((p) => p.id !== petId)
-        );
+        this.petsSignal.set(this.petsSignal().filter((p) => p.id !== petId));
       })
     );
   }
