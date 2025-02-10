@@ -1,82 +1,73 @@
 # PetstoreWorkspace
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+# 🐾 Pet Management App - Angular + NX + Cypress + Tailwind
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+🚀 **Pet Management App** to aplikacja webowa zbudowana w **Angular 19**, wykorzystująca **NX Monorepo** do zarządzania projektem.  
+Aplikacja umożliwia zarządzanie zwierzętami, takie jak dodawanie, edytowanie, usuwanie i filtrowanie.  
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/angular-standalone-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+UI został zbudowany przy użyciu **Angular Material** i **Tailwind CSS**, a testy E2E są wykonywane za pomocą **Cypress**.
 
-## Finish your remote caching setup
+---
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/RJRNQ1cAij)
+## 🌟 **Funkcjonalności**
+✅ **Lista zwierząt** z filtrowaniem i sortowaniem  
+✅ **Dodawanie, edytowanie i usuwanie zwierząt**  
+✅ **Dynamiczne formularze** (obsługa zdjęć i tagów)  
+✅ **Walidacja danych** (np. opcjonalny URL)  
+✅ **Nowoczesny UI (Angular Material + Tailwind CSS)**  
+✅ **Obsługa testów jednostkowych (Jest) i E2E (Cypress)**  
+✅ **Nowoczesna architektura NX Monorepo**  
+✅ **Optymalizacja: ChangeDetectionStrategy.OnPush + Angular Signals**  
 
+---
 
-## Run tasks
+## 🛠️ **Technologie użyte w projekcie**
+| 🔧 **Technologia** | 📜 **Opis** |
+|----------------|----------------|
+| **Angular 19** | Framework frontendowy |
+| **NX Monorepo** | Modularna architektura zarządzania projektem |
+| **Angular Signals** | Efektywne zarządzanie stanem |
+| **RxJS** | Reaktywne operacje asynchroniczne |
+| **Angular Material** | Komponenty UI |
+| **Tailwind CSS** | Nowoczesne stylowanie UI |
+| **Cypress** | Testy end-to-end (E2E) |
+| **Jest** | Testy jednostkowe |
+| **ESLint & Prettier** | Linting i formatowanie kodu |
+| **TypeScript** | Statyczne typowanie |
+| **SCSS** | Preprocesor CSS |
 
-To run the dev server for your app, use:
+📌 **Tailwind CSS jest używany razem z Angular Material, co pozwala na pełną kontrolę nad stylami.**  
 
-```sh
-npx nx serve petstore-workspace
+---
+
+## 🚀 **Instalacja i uruchomienie**
+### 📥 **1. Klonowanie repozytorium**
+```bash
+git clone https://github.com/BrzozowskiMichal/pets-store.git
+cd pets-store
+```
+### 📥 **2. Instalackja zależności**
+```bash
+npm install
 ```
 
-To create a production bundle:
-
-```sh
-npx nx build petstore-workspace
+### **3. Uruchomienie aplikacji**
+```bash
+npm start
 ```
 
-To see all available targets to run for a project, run:
-
-```sh
-npx nx show project petstore-workspace
+### **4. Uruchomienie testów**
+```bash
+npm test
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/angular:app demo
+### **5. Uruchomienie testów E2E**
+```bash
+npm run e2e
 ```
 
-To generate a new library, use:
-
-```sh
-npx nx g @nx/angular:lib mylib
-```
-
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
+## Polecam również Nx Console
 
 Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
 
 [Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/angular-standalone-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
