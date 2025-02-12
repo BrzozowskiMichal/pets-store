@@ -67,6 +67,9 @@ export class PetListComponent {
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.dataSource.filterPredicate = (data: Pet, filter: string) => {
+      return data.name?.toLowerCase().includes(filter);
+    };
     this.loadPets();
   }
 

@@ -104,8 +104,88 @@ describe('Pet List Page', () => {
   it('should show "Brak wyników" when search finds no results', () => {
     cy.get('[data-cy="search-input"]').type('NonExistentPet');
     cy.get('[data-cy="pets-table"]').should('exist');
-    cy.get('[data-cy="no-results"]').should('contain.text', 'Brak wyników. Spróbuj wyszukać inną nazwę');
+    cy.get('[data-cy="no-results"]').should(
+      'contain.text',
+      'Brak wyników. Spróbuj wyszukać inną nazwę'
+    );
     cy.get('[data-cy^="pet-id-"]').should('not.exist');
+  });
+});
+
+describe('Pet List Table Sorting', () => {
+  beforeEach(() => {
+    cy.visit('/');
+    cy.wait(500);
+  });
+
+  it('sorting on ID column', () => {
+    cy.get('[data-cy="pets-table"] thead th').contains('ID').click();
+
+    cy.wait(500);
+
+    cy.get('[data-cy^="pet-id-"]').then(($rows) => {
+      const ids = $rows
+        .map((index, row) => parseInt(row.innerText.trim()))
+        .get();
+      const sortedIds = [...ids].sort((a, b) => a - b);
+      expect(ids).to.deep.equal(sortedIds);
+    });
+
+    cy.get('[data-cy="pets-table"] thead th').contains('ID').click();
+
+    cy.wait(500);
+
+    cy.get('[data-cy^="pet-id-"]').then(($rows) => {
+      const ids = $rows
+        .map((index, row) => parseInt(row.innerText.trim()))
+        .get();
+      const sortedIds = [...ids].sort((a, b) => b - a);
+      expect(ids).to.deep.equal(sortedIds);
+    });
+  });
+
+  it('sorting on name column', () => {
+    cy.get('[data-cy="pets-table"] thead th').contains('Nazwa').click();
+
+    cy.wait(500);
+
+    cy.get('[data-cy^="pet-name-"]').then(($rows) => {
+      const names = $rows.map((index, row) => row.innerText.trim()).get();
+      const sortedNames = [...names].sort();
+      expect(names).to.deep.equal(sortedNames);
+    });
+
+    cy.get('[data-cy="pets-table"] thead th').contains('Nazwa').click();
+
+    cy.wait(500);
+
+    cy.get('[data-cy^="pet-name-"]').then(($rows) => {
+      const names = $rows.map((index, row) => row.innerText.trim()).get();
+      const sortedNames = [...names].sort().reverse();
+      expect(names).to.deep.equal(sortedNames);
+    });
+  });
+
+  it('sorting on status column', () => {
+    cy.get('[data-cy="pets-table"] thead th').contains('Status').click();
+
+    cy.wait(500);
+
+    cy.get('[data-cy^="pet-status-"]').then(($rows) => {
+      const statuses = $rows.map((index, row) => row.innerText.trim()).get();
+      const sortedStatuses = [...statuses].sort();
+      expect(statuses).to.deep.equal(sortedStatuses);
+    });
+
+    cy.get('[data-cy="pets-table"] thead th').contains('Status').click();
+
+    cy.wait(500);
+
+    cy.get('[data-cy^="pet-status-"]').then(($rows) => {
+      const statuses = $rows.map((index, row) => row.innerText.trim()).get();
+      const sortedStatuses = [...statuses].sort().reverse();
+      expect(statuses).to.deep.equal(sortedStatuses);
+    });
   });
 });
 
